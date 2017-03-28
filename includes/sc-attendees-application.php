@@ -83,7 +83,7 @@ function wphackathon_sc_attendees_application( $atts ) {
         <label><?php _e( 'Select your Skill (required)', $wph_textdomain ); ?></label><br />
           <?php
 
-          $select_cats = wp_dropdown_categories( array( 'echo' => 0, 'taxonomy' => 'attendee-skill', 'hide_empty' => 0 ) );
+          $select_cats = wp_dropdown_categories( array( 'echo' => 0, 'taxonomy' => 'skill', 'hide_empty' => 0 ) );
           $select_cats = str_replace( "name='cat' id=", "name='cat[]' id=", $select_cats );
           echo $select_cats;
 

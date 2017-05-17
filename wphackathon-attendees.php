@@ -17,6 +17,7 @@ include( WPH_ATTENDEES_PATH . '/includes/cpt-attendees.php' );
 
 /* Custom Taxonomy Attendees Skills */
 include( WPH_ATTENDEES_PATH . '/includes/ct-skills.php' );
+register_activation_hook( __FILE__, 'wphackathon_custom_taxonomy');
 
 /* Shortcode - Attendees */
 include( WPH_ATTENDEES_PATH . '/includes/sc-attendees.php' );

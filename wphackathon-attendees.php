@@ -24,7 +24,7 @@ include( WPH_ATTENDEES_PATH . '/includes/sc-attendees.php' );
 /* Shortcode - Attendees Application */
 include( WPH_ATTENDEES_PATH . '/includes/sc-attendees-application.php' );
 
-/* Create custom pages for attendeens*/
+/* Create custom pages for attendees */
 include( WPH_ATTENDEES_PATH . '/includes/create-custom-pages.php' );
 register_activation_hook( __FILE__, 'wphackathon_custom_pages' );
 

@@ -61,32 +61,32 @@ function wphackathon_sc_attendees_application( $atts ) {
         <form id="new_post" name="new_post" method="post" action="">
 
             <p>
-                <label for="wph-attendee-name"><?php _e( 'First and Second Name (required)', $wph_textdomain ); ?></label><br />
+                <label for="wph-attendee-name"><?php _e( 'First and Second Name (required)', 'wph_attendees' ); ?></label><br />
                 <input type="text" id="wph-attendee-name" value="" name="wph-attendee-name" tabindex="2" size="20">
             </p>
 
             <p>
-                <label for="wph-attendee-email"><?php _e( 'Email - we use Gravatar service for the photograph (required)', $wph_textdomain); ?></label><br />
+                <label for="wph-attendee-email"><?php _e( 'Email - we use Gravatar service for the photograph (required)', 'wph_attendees'); ?></label><br />
                 <input type="email" id="wph-attendee-email" name="wph-attendee-email" value="" tabindex="3" size="20">
             </p>
 
             <p>
-                <label for="wph-attendee-description"><?php _e( 'Talk us about: what do you do and what is your experience? (required)', $wph_textdomain ); ?></label><br />
+                <label for="wph-attendee-description"><?php _e( 'Talk us about: what do you do and what is your experience? (required)', 'wph_attendees' ); ?></label><br />
                 <textarea id="wph-attendee-description" name="wph-attendee-description" tabindex="4" cols="50" rows="6"></textarea>
             </p>
 
             <p>
-                <label for="wph-attendee-twitter"><?php _e( 'Twitter Username', $wph_textdomain); ?></label><br />
+                <label for="wph-attendee-twitter"><?php _e( 'Twitter Username', 'wph_attendees'); ?></label><br />
                 <input type="text" id="wph-attendee-twitter" name="wph-attendee-twitter" value="" tabindex="5" size="20">
             </p>
 
             <p>
-                <label for="wph-attendee-org-user"><?php _e( 'WordPress.org Username', $wph_textdomain); ?></label><br />
+                <label for="wph-attendee-org-user"><?php _e( 'WordPress.org Username', 'wph_attendees'); ?></label><br />
                 <input type="text" id="wph-attendee-org-user" name="wph-attendee-org-user" value="" tabindex="6" size="20">
             </p>
 
             <p>
-                <label><?php _e( 'Select your Skill (required)', $wph_textdomain ); ?></label><br />
+                <label><?php _e( 'Select your Skill (required)', 'wph_attendees' ); ?></label><br />
 				<?php
 
 				$select_cats = wp_dropdown_categories( array( 'echo' => 0, 'taxonomy' => 'skill', 'hide_empty' => 0 ) );
@@ -112,11 +112,11 @@ function wphackathon_sc_attendees_application( $atts ) {
 			<?php if ( $the_query->have_posts() ) : ?>
 
                 <p>
-                    <label><?php _e( 'With which Organization in particular would you like to take part?', $wph_textdomain ); ?></label><br />
+                    <label><?php _e( 'With which Organization in particular would you like to take part?', 'wph_attendees' ); ?></label><br />
 
                     <select class="" name="wph-attendee-organization-selection" tabindex="8">
 
-                        <option value="<?php _e( 'Anyone', $wph_textdomain ); ?>"><?php _e( 'Anyone', $wph_textdomain ); ?></option>
+                        <option value="<?php _e( 'Anyone', 'wph_attendees' ); ?>"><?php _e( 'Anyone', 'wph_attendees' ); ?></option>
 
                         <!-- the loop -->
 						<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
@@ -138,13 +138,13 @@ function wphackathon_sc_attendees_application( $atts ) {
             </p>
 
             <p>
-                <label for="wph-attendee-explanation"><?php _e( 'Why do you want to participate in WPHackathon? (required)', $wph_textdomain ); ?></label><br />
+                <label for="wph-attendee-explanation"><?php _e( 'Why do you want to participate in WPHackathon? (required)', 'wph_attendees' ); ?></label><br />
                 <textarea id="wph-attendee-explanation" name="wph-attendee-explanation" tabindex="9" cols="50" rows="6"></textarea>
             </p>
 
-            <div class="alert alert-danger hidden" role="alert"><?php _e('Some fields are required', $wph_textdomain); ?></div>
+            <div class="alert alert-danger hidden" role="alert"><?php _e('Some fields are required', 'wph_attendees'); ?></div>
 
-            <p><input type="submit" value="<?php _e( 'Participate', $wph_textdomain ); ?>" tabindex="10" id="submit" name="submit" /></p>
+            <p><input type="submit" value="<?php _e( 'Participate', 'wph_attendees' ); ?>" tabindex="10" id="submit" name="submit" /></p>
 
             <input type="hidden" name="action" value="new_attendee" />
 

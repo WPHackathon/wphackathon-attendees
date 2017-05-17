@@ -12,10 +12,6 @@ define( 'WPH_ATTENDEES_PATH', dirname( __FILE__ ) );
 define( 'WPH_ATTENDEES_FOLDER', basename( WPH_ATTENDEES_PATH ) );
 define( 'WPH_ATTENDEES_URL', plugins_url() . '/' . WPH_ATTENDEES_FOLDER );
 
-
-$wph_textdomain = 'wphackathon-cpt-attendees';
-$wph_ct_textdomain = 'wphackathon-ct-attendees-skill';
-
 /* Custom Post Type - Attendees */
 include( WPH_ATTENDEES_PATH . '/includes/cpt-attendees.php' );
 
@@ -30,3 +26,64 @@ include( WPH_ATTENDEES_PATH . '/includes/sc-attendees-application.php' );
 
 /* Widget - Attendees */
 // include( WPH_ATTENDEES_PATH . '/includes/widget-attendees.php' );
+
+class WPH_ATTENDEES_Base
+{
+
+    public function __construct()
+    {
+        $this->loadPluginTextDomain();
+        $this->registerScripts();
+        $this->removePluginUpdates();
+
+    }
+
+    public function loadPluginTextDomain() {
+        add_action( 'plugins_loaded', array( $this, 'loadPluginTextDomainCallBack' ) );
+    }
+    public function loadPluginTextDomainCallBack() {
+        load_plugin_textdomain( 'wph_attendees', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
+    }
+
+    function registerScripts(){
+        add_action( 'wp_enqueue_scripts', array( $this, 'registerJSScripts' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'registerCSSScripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'registerJSadminScripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'registerCSSadminScripts' ) );
+    }
+
+    public function registerJSScripts( $hook ) {
+        wp_enqueue_script( 'jquery' );
+    }
+
+    public function registerCSSScripts( $hook ) {
+    }
+
+    public function registerJSadminScripts( $hook ) {
+    }
+
+    public function registerCSSadminScripts( $hook ) {
+    }
+
+    function removePluginUpdates(){
+        add_filter('site_transient_update_plugins', array( $this, 'removePluginUpdatesCallback' ), 10, 1);
+    }
+    function removePluginUpdatesCallback($value) {
+        if (!empty($value) && is_object($value) && !isset($value->response[ plugin_basename(__FILE__) ])){
+            unset($value->response[ plugin_basename(__FILE__) ]);
+        }
+        return $value;
+    }
+
+}
+
+add_action( 'admin_notices', 'wph_attendees_adminErrorsShow');
+function wph_attendees_adminErrorsShow(){
+    global $wph_attendees_adminErrors_message;
+    foreach ($wph_attendees_adminErrors_message as $message) {
+        $class = 'notice notice-error';
+        printf('<div class="%1$s"><p>%2$s</p></div>', $class, $message);
+    }
+}
+
+$WPH_ATTENDEES_plugin_base = new WPH_ATTENDEES_Base();

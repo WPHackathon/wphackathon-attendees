@@ -61,17 +61,24 @@ function wphackathon_sc_attendees_application( $atts ) {
                 <input type="text" id="wph-attendee-org-user" name="wph-attendee-org-user" value="" tabindex="6" size="20">
             </p>
 
+            <?php
+                // Check the Skill taxonomy has terms
+                $args = array(
+                    'hide_empty' => 0,
+                    'taxonomy' => 'skill'
+                );
+                $skill_terms = get_terms($args);
+                if(!empty($skill_terms)):
+            ?>
             <p>
                 <label><?php _e( 'Select your Skill (required)', 'wph_attendees' ); ?></label><br />
-				<?php
-
-				$select_cats = wp_dropdown_categories( array( 'echo' => 0, 'taxonomy' => 'skill', 'hide_empty' => 0 ) );
-				$select_cats = str_replace( "name='cat' id=", "name='cat[]' id=", $select_cats );
-				echo $select_cats;
-
-				?>
-
+                <select name="cat[]" id="cat" class="postform">
+                    <?php foreach($skill_terms as $skill): ?>
+                    <option value="<?php echo $skill->term_id; ?>"><?php echo $skill->name; ?></option>
+                    <?php endforeach; ?>
+                </select>
             </p>
+            <?php endif; ?>
 
 			<?php
 
@@ -171,7 +178,7 @@ function wphackathon_attendees_application_register(){
 		$orguser      = sanitize_text_field( $_POST['wph-attendee-org-user'] );
 		$explanation  = sanitize_text_field( $_POST['wph-attendee-explanation'] );
 		$organization = isset( $_POST['wph-attendee-organization-selection'] ) ? $_POST['wph-attendee-organization-selection'] : false;
-		$skill        = $_POST['cat'];
+		$skill        = isset( $_POST['cat'] ) ? (array)$_POST['cat'] : array();
 
 		// Add the content of the form to $post as an array
 		$post = array(
@@ -196,8 +203,8 @@ function wphackathon_attendees_application_register(){
 			wp_redirect($_SERVER['HTTP_REFERER'] . '?msg=err-attendees-saving');
         }
         else{
-		    // Save the catogyr
-	        wp_set_post_terms( $post_id, $_POST['cat'], 'skill', false );
+	        // Save the category
+		    wp_set_post_terms( $post_id, $skill, 'skill', false );
 
 	        // Redirect the user to the Attendees list with a success message
             wp_redirect(get_bloginfo('url') . "/attendees?msg=attendees-register-success");

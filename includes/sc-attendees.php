@@ -3,8 +3,11 @@
 // Shortcode to show the list of Attendees
 function wphackathon_sc_attendees( $atts ) {
 
-  // Add Shortcode Attributes
-  $atts = shortcode_atts(
+	/* Load Plugin Messages */
+	include( WPH_ATTENDEES_PATH . '/includes/wph-messages.php' );
+
+	// Add Shortcode Attributes
+	$atts = shortcode_atts(
 		array(
 			'order'          => 'asc',
 			'orderby'        => 'title',
@@ -12,50 +15,60 @@ function wphackathon_sc_attendees( $atts ) {
 			'columns'        => 3,
 		), $atts );
 
-  // Add Attendees Query arguments
-  $args = array(
-    'order'          => $atts['order'],
-    'orderby'        => $atts['orderby'],
-    'posts_per_page' => $atts['posts_per_page'],
-    'columns'        => $atts['columns'],
-    'post_type'      => 'attendee'
-  );
+	// Add Attendees Query arguments
+	$args = array(
+		'order'          => $atts['order'],
+		'orderby'        => $atts['orderby'],
+		'posts_per_page' => $atts['posts_per_page'],
+		'columns'        => $atts['columns'],
+		'post_type'      => 'attendee'
+	);
 
-  $the_query = new WP_Query( $args ); ?>
+	$the_query = new WP_Query( $args ); ?>
 
-  <?php if ( $the_query->have_posts() ) : ?>
+	<?php
+	// Server fields verification. Show error message in case of required or error in fields.
+	if( isset($_GET['msg']) ):
+		$message = array_key_exists($_GET['msg'], $wph_success_messages) ? $wph_success_messages[$_GET['msg']] : false;
+		if($message):
+			?>
+            <div class="alert alert-success" role="alert"><?php echo $message; ?></div>
+		<?php endif;
+	endif; ?>
 
-    <div id="wph-attendees">
-      <ul class="wph-attendee-list wph-columns-<?php echo $atts['columns']; ?>">
+	<?php if ( $the_query->have_posts() ) : ?>
 
-    <!-- the loop -->
-      <?php while ( $the_query->have_posts() ) : $the_query->the_post();
+        <div id="wph-attendees">
+            <ul class="wph-attendee-list wph-columns-<?php echo $atts['columns']; ?>">
 
-      $email = get_post_meta( get_the_ID(), 'attendee_email', true );
-      $twitter = get_post_meta( get_the_ID(), 'attendee_twitter', true );
+                <!-- the loop -->
+				<?php while ( $the_query->have_posts() ) : $the_query->the_post();
 
-      ?>
+					$email = get_post_meta( get_the_ID(), 'attendee_email', true );
+					$twitter = get_post_meta( get_the_ID(), 'attendee_twitter', true );
 
-        <li>
-          <?php echo get_avatar( $email, 120 ); ?>
-          <a href="<?php the_permalink(); ?>" class="attendee-name" title="<?php _e( 'Attendee', 'wph_attendees' ); ?>"><?php echo the_title(); ?></a>
+					?>
 
-          <?php if ( !empty( $twitter ) ) : ?>
-            <a href="//twitter.com/<?php echo $twitter; ?>" class="attendee-twitter" target="_blank">@<?php echo $twitter; ?></a>
-          <?php endif; ?>
-        </li>
+                    <li>
+						<?php echo get_avatar( $email, 120 ); ?>
+                        <a href="<?php the_permalink(); ?>" class="attendee-name" title="<?php _e( 'Attendee', 'wph_attendees' ); ?>"><?php echo the_title(); ?></a>
 
-      <?php endwhile; ?>
-    <!-- end of the loop -->
+						<?php if ( !empty( $twitter ) ) : ?>
+                            <a href="//twitter.com/<?php echo $twitter; ?>" class="attendee-twitter" target="_blank">@<?php echo $twitter; ?></a>
+						<?php endif; ?>
+                    </li>
 
-      </ul>
-    </div>
+				<?php endwhile; ?>
+                <!-- end of the loop -->
 
-    <?php wp_reset_postdata(); ?>
+            </ul>
+        </div>
 
-  <?php else : ?>
-      <p><?php _e( 'Sorry, still no attendees for this WPHackathon.' ); ?></p>
-  <?php endif;
+		<?php wp_reset_postdata(); ?>
+
+	<?php else : ?>
+        <p><?php _e( 'Sorry, still no attendees for this WPHackathon.' ); ?></p>
+	<?php endif;
 
 }
 add_shortcode( 'wph_attendees', 'wphackathon_sc_attendees' );

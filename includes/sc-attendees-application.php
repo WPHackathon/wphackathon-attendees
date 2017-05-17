@@ -16,47 +16,18 @@ function wphackathon_sc_attendees_application( $atts ) {
 
 	), $atts );
 
-
-	if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) ) {
-
-		// Asign the form content to variables
-		$name         = $_POST['wph-attendee-name'];
-		$description  = $_POST['wph-attendee-description'];
-		$email        = $_POST['wph-attendee-email'];
-		$twitter      = $_POST['wph-attendee-twitter'];
-		$orguser      = $_POST['wph-attendee-org-user'];
-		$explanation  = $_POST['wph-attendee-explanation'];
-		$organization = $_POST['wph-attendee-organization-selection'];
-		$skill        = $_POST['cat'];
-
-		// Add the content of the form to $post as an array
-		$post = array(
-			'post_title'	  => $name,
-			'post_content'	=> $description,
-			'post_category' => $skill,
-			'post_status'	  => 'draft',
-			'post_type'	    => 'attendee',
-			'meta_input'    => array(
-				'attendee_email'        => $email,
-				'attendee_twitter'      => $twitter,
-				'attendee_orguser'      => $orguser,
-				'attendee_explanation'  => $explanation,
-				'attendee_organization' => $organization,
-			),
-		);
-
-		$post_id = wp_insert_post( $post );
-
-		wp_set_post_terms( $post_id, $_POST['cat'], 'skill', false );
-
-	} // end IF
-
 	?>
 
 
     <!-- New Attendee Form -->
 
     <div id="postbox">
+
+        <?php
+        // Server fields verification. Show error message in case of required or error in fields.
+        if( isset($_GET['error-fields']) && $_GET['error-fields'] == "1"): ?>
+        <div class="alert alert-danger" role="alert"><?php _e('Some fields are required', $wph_textdomain); ?></div>
+        <?php endif; ?>
 
         <form id="new_post" name="new_post" method="post" action="">
 
@@ -121,7 +92,7 @@ function wphackathon_sc_attendees_application( $atts ) {
                         <!-- the loop -->
 						<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
 
-                            <option value="<?php the_title(); ?>"><?php the_title(); ?></option>
+                            <option value="<?php get_the_ID(); ?>"><?php the_title(); ?></option>
 
 						<?php endwhile; ?>
                         <!-- end of the loop -->
@@ -158,3 +129,66 @@ function wphackathon_sc_attendees_application( $atts ) {
 
 }
 add_shortcode( 'wph_attendees_application', 'wphackathon_sc_attendees_application' );
+
+
+/**
+ * This function checks the Attendees Application form.
+ * If everything is OK saves in database.
+ * Otherwise return to the same page with a message.
+ */
+function wphackathon_attendees_application_register(){
+
+	if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] && $_POST['action'] == "new_attendee" ) ) {
+
+	    // Check the required fields
+        if(
+            empty( $_POST['wph-attendee-name'] ) ||
+            empty( $_POST['wph-attendee-email'] ) ||
+            empty( $_POST['wph-attendee-description'] ) ||
+            empty( $_POST['wph-attendee-explanation'] ) ||
+            empty( $_POST['wph-attendee-explanation'] )
+        ){
+            wp_redirect($_SERVER['HTTP_REFERER'] . '?error-fields=1');
+	        exit;
+        }
+
+        // Check if the attendee email is correct
+        if( !is_email( $_POST['wph-attendee-email'] ) ){
+	        wp_redirect($_SERVER['HTTP_REFERER'] . '?error-fields=1');
+	        exit;
+        }
+
+		// Asign the form content to variables
+		$name         = sanitize_text_field( $_POST['wph-attendee-name'] );
+		$description  = sanitize_text_field( $_POST['wph-attendee-description'] );
+		$email        = sanitize_email( $_POST['wph-attendee-email'] );
+		$twitter      = sanitize_text_field( $_POST['wph-attendee-twitter'] );
+		$orguser      = sanitize_text_field( $_POST['wph-attendee-org-user'] );
+		$explanation  = sanitize_text_field( $_POST['wph-attendee-explanation'] );
+		$organization = isset( $_POST['wph-attendee-organization-selection'] ) ? $_POST['wph-attendee-organization-selection'] : false;
+		$skill        = $_POST['cat'];
+
+		// Add the content of the form to $post as an array
+		$post = array(
+			'post_title'	  => $name,
+			'post_content'	=> $description,
+			'post_category' => $skill,
+			'post_status'	  => 'draft',
+			'post_type'	    => 'attendee',
+			'meta_input'    => array(
+				'attendee_email'        => $email,
+				'attendee_twitter'      => $twitter,
+				'attendee_orguser'      => $orguser,
+				'attendee_explanation'  => $explanation,
+				'attendee_organization' => $organization,
+			),
+		);
+
+		$post_id = wp_insert_post( $post );
+
+		wp_set_post_terms( $post_id, $_POST['cat'], 'skill', false );
+
+	} // end IF
+
+}
+add_action('template_redirect', 'wphackathon_attendees_application_register');

@@ -80,9 +80,11 @@ class WPH_ATTENDEES_Base
 add_action( 'admin_notices', 'wph_attendees_adminErrorsShow');
 function wph_attendees_adminErrorsShow(){
     global $wph_attendees_adminErrors_message;
-    foreach ($wph_attendees_adminErrors_message as $message) {
-        $class = 'notice notice-error';
-        printf('<div class="%1$s"><p>%2$s</p></div>', $class, $message);
+    if (!empty($wph_attendees_adminErrors_message)) {
+        foreach ($wph_attendees_adminErrors_message as $message) {
+            $class = 'notice notice-error';
+            printf('<div class="%1$s"><p>%2$s</p></div>', $class, $message);
+        }
     }
 }
 

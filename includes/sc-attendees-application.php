@@ -4,15 +4,15 @@
 function wphackathon_sc_attendees_application( $atts ) {
 
 	// Enqueue Javascript file to validate form
-	wp_enqueue_script('attendees-application-js', plugins_url() . "/wphackathon-attendees/assets/js/attendees-application.js", array('jquery'), true);
+	wp_enqueue_script('attendees-application-js', WPH_ATTENDEES_URL.'/assets/js/attendees-application.js', array('jquery'), true);
 
 	// Enqueue Style
-	wp_enqueue_style('attendees-application-css', plugins_url() . "/wphackathon-attendees/assets/css/style.css", array(), false);
+	wp_enqueue_style('attendees-application-css', WPH_ATTENDEES_URL.'/assets/css/style.css', array(), false);
 
 	// Add Shortcode Attributes
 	$a = shortcode_atts( array(
 
-		'skills' => array("Font-end", "Back-end", "Designer", "Copywriter"),
+		'skills' => array("Front-end", "Back-end", "Designer", "Copywriter"),
 
 	), $atts );
 

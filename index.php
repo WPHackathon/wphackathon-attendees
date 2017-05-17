@@ -9,6 +9,9 @@ Author URI: https://www.wphackathon.com
 */
 
 define( 'WPH_ATTENDEES_PATH', dirname( __FILE__ ) );
+define( 'WPH_ATTENDEES_FOLDER', basename( WPH_ATTENDEES_PATH ) );
+define( 'WPH_ATTENDEES_URL', plugins_url() . '/' . WPH_ATTENDEES_FOLDER );
+
 
 $wph_textdomain = 'wphackathon-cpt-attendees';
 $wph_ct_textdomain = 'wphackathon-ct-attendees-skill';

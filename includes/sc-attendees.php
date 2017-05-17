@@ -38,7 +38,7 @@ function wphackathon_sc_attendees( $atts ) {
 
         <li>
           <?php echo get_avatar( $email, 120 ); ?>
-          <a href="<?php the_permalink(); ?>" class="attendee-name" title="<?php _e( 'Attendee', $wph_textdomain ); ?>"><?php echo the_title(); ?></a>
+          <a href="<?php the_permalink(); ?>" class="attendee-name" title="<?php _e( 'Attendee', 'wph_attendees' ); ?>"><?php echo the_title(); ?></a>
 
           <?php if ( !empty( $twitter ) ) : ?>
             <a href="//twitter.com/<?php echo $twitter; ?>" class="attendee-twitter" target="_blank">@<?php echo $twitter; ?></a>

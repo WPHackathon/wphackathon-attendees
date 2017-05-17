@@ -9,12 +9,12 @@ function wphackathon_custom_pages(){
 	$author_id = 1;
 	$title = array(
 		0	=> array(
-				'title'			=> __( 'Attendees Application', $wph_textdomain ), 
+				'title'			=> __( 'Attendees Application', 'wphackathon-cpt-attendees' ),
 				'slug'			=> 'attendees-application',
 				'post_content'	=> '[wph_attendees_application]'
 			),
 		1	=> array(
-				'title'		=> __( 'Attendees', $wph_textdomain ), 
+				'title'		=> __( 'Attendees', 'wphackathon-cpt-attendees' ),
 				'slug'		=> 'attendees',
 				'post_content'	=> '[wph_attendees]'
 			)

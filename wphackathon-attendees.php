@@ -61,6 +61,8 @@ class WPH_ATTENDEES_Base
 	}
 
 	public function registerCSSScripts( $hook ) {
+		// Enqueue Style
+		wp_enqueue_style('attendees-application-css', WPH_ATTENDEES_URL.'/assets/css/style.css', array(), false);
 	}
 
 	public function registerJSadminScripts( $hook ) {

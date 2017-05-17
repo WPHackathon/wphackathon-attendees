@@ -1,4 +1,25 @@
 <?php
+
+// Order to create custom pages in multisite and single sites
+function wphackathon_create_pages($network_wide) {
+
+  if ( is_multisite() && $network_wide ) { 
+
+    global $wpdb;
+
+    foreach ($wpdb->get_col("SELECT blog_id FROM $wpdb->blogs") as $blog_id) {
+      switch_to_blog($blog_id);
+      	wphackathon_custom_pages();
+      restore_current_blog();
+    } 
+
+  } else {
+     wphackathon_custom_pages();
+  }
+
+}
+
+
 // Create custom pages for attendees
 function wphackathon_custom_pages(){
 	// Create Page

@@ -26,11 +26,8 @@ include( WPH_ATTENDEES_PATH . '/includes/sc-attendees-application.php' );
 
 /* Create custom pages for attendees */
 include( WPH_ATTENDEES_PATH . '/includes/create-custom-pages.php' );
-register_activation_hook( __FILE__, 'wphackathon_custom_pages' );
+register_activation_hook( __FILE__, 'wphackathon_create_pages' );
 
-if is_multisite() {
-	add_action( 'wpmu_new_blog', 'wphackathon_custom_pages' );
-}
 
 /* Widget - Attendees */
 // include( WPH_ATTENDEES_PATH . '/includes/widget-attendees.php' );

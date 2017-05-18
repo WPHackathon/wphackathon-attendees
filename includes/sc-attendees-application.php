@@ -208,6 +208,17 @@ function wphackathon_attendees_application_register(){
 
 	        // Redirect the user to the Attendees list with a success message
             wp_redirect(get_bloginfo('url') . "/attendees?msg=attendees-register-success");
+			
+			// Send the emails
+			// Send the email to admin
+		
+			$to = get_option('admin_email');
+			$url = home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit';
+			$subjet = __( 'New WPHackathon attendee', 'wph_attendees' );
+			$message = __( 'There is a new attendee for the WPHackathon.<p> Please, <a href="'. $url .'" title="attendee">login in the web and check it</a>.</p>', 'wph_attendees' );
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+			wp_mail( $to, $subjet, $message, $headers );
         }
 
 	} // end IF

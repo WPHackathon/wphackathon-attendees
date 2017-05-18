@@ -3,11 +3,11 @@
 // Shortcode to show the form for Attendees Application
 function wphackathon_sc_attendees_application( $atts ) {
 
+	/* Load Plugin Messages */
+	include( WPH_ATTENDEES_PATH . '/includes/wph-messages.php' );
+
 	// Enqueue Javascript file to validate form
 	wp_enqueue_script('attendees-application-js', WPH_ATTENDEES_URL.'/assets/js/attendees-application.js', array('jquery'), true);
-
-	// Enqueue Style
-	wp_enqueue_style('attendees-application-css', WPH_ATTENDEES_URL.'/assets/css/style.css', array(), false);
 
 	// Add Shortcode Attributes
 	$a = shortcode_atts( array(
@@ -25,9 +25,14 @@ function wphackathon_sc_attendees_application( $atts ) {
 
         <?php
         // Server fields verification. Show error message in case of required or error in fields.
-        if( isset($_GET['error-fields']) && $_GET['error-fields'] == "1"): ?>
-        <div class="alert alert-danger" role="alert"><?php _e('Some fields are required', $wph_textdomain); ?></div>
-        <?php endif; ?>
+        if( isset($_GET['msg']) ):
+            $message = array_key_exists($_GET['msg'], $wph_error_messages) ? $wph_error_messages[$_GET['msg']] : false;
+            if($message):
+            ?>
+        <div class="alert alert-danger" role="alert"><?php echo $message; ?></div>
+        <?php
+            endif;
+        endif; ?>
 
         <form id="new_post" name="new_post" method="post" action="">
 
@@ -148,13 +153,13 @@ function wphackathon_attendees_application_register(){
             empty( $_POST['wph-attendee-explanation'] ) ||
             empty( $_POST['wph-attendee-explanation'] )
         ){
-            wp_redirect($_SERVER['HTTP_REFERER'] . '?error-fields=1');
+            wp_redirect($_SERVER['HTTP_REFERER'] . '?msg=incomplete-fields');
 	        exit;
         }
 
         // Check if the attendee email is correct
         if( !is_email( $_POST['wph-attendee-email'] ) ){
-	        wp_redirect($_SERVER['HTTP_REFERER'] . '?error-fields=1');
+	        wp_redirect($_SERVER['HTTP_REFERER'] . '?msg=field-values-not-valid');
 	        exit;
         }
 
@@ -187,6 +192,7 @@ function wphackathon_attendees_application_register(){
 
 		$post_id = wp_insert_post( $post );
 
+<<<<<<< HEAD
 		wp_set_post_terms( $post_id, $_POST['cat'], 'skill', false );
 		
 		
@@ -199,6 +205,19 @@ function wphackathon_attendees_application_register(){
 		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 		
 		wp_mail( $to, $subjet, $message, $headers );
+=======
+		if( is_wp_error( $post_id ) ) {
+			// Redirect the user to the same page with a message error
+			wp_redirect($_SERVER['HTTP_REFERER'] . '?msg=err-attendees-saving');
+        }
+        else{
+		    // Save the catogyr
+	        wp_set_post_terms( $post_id, $_POST['cat'], 'skill', false );
+
+	        // Redirect the user to the Attendees list with a success message
+            wp_redirect(get_bloginfo('url') . "/attendees?msg=attendees-register-success");
+        }
+>>>>>>> origin/features/fgr_attendees
 
 	} // end IF
 

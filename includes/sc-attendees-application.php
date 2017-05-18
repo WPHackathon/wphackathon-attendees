@@ -167,26 +167,38 @@ function wphackathon_attendees_application_register(){
 		$explanation  = sanitize_text_field( $_POST['wph-attendee-explanation'] );
 		$organization = isset( $_POST['wph-attendee-organization-selection'] ) ? $_POST['wph-attendee-organization-selection'] : false;
 		$skill        = $_POST['cat'];
-
+		
 		// Add the content of the form to $post as an array
+		
 		$post = array(
-			'post_title'	  => $name,
-			'post_content'	=> $description,
-			'post_category' => $skill,
-			'post_status'	  => 'draft',
-			'post_type'	    => 'attendee',
-			'meta_input'    => array(
-				'attendee_email'        => $email,
-				'attendee_twitter'      => $twitter,
-				'attendee_orguser'      => $orguser,
-				'attendee_explanation'  => $explanation,
-				'attendee_organization' => $organization,
+			'post_title'			=> $name,
+			'post_content'			=> $description,
+			'post_category' 		=> $skill,
+			'post_status'			=> 'draft',
+			'post_type'	    		=> 'attendee',
+			'meta_input'    		=> array(
+			'attendee_email'		=> $email,
+			'attendee_twitter'      => $twitter,
+			'attendee_orguser'      => $orguser,
+			'attendee_explanation'  => $explanation,
+			'attendee_organization' => $organization,
 			),
 		);
 
 		$post_id = wp_insert_post( $post );
 
 		wp_set_post_terms( $post_id, $_POST['cat'], 'skill', false );
+		
+		
+		// Send the email to admin
+		
+		$to = get_option('admin_email');
+		$url = home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit';
+		$subjet = __( 'New WPHackathon attendee', 'wph_attendees' );
+		$message = __( 'There is a new attendee for the WPHackathon.<p> Please, <a href="'. $url .'" title="attendee">login in the web and check it</a>.</p>', 'wph_attendees' );
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+		
+		wp_mail( $to, $subjet, $message, $headers );
 
 	} // end IF
 

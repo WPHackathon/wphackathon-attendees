@@ -202,24 +202,32 @@ function wphackathon_attendees_application_register(){
 			// Redirect the user to the same page with a message error
 			wp_redirect($_SERVER['HTTP_REFERER'] . '?msg=err-attendees-saving');
         }
-        else{
-	        // Save the category
-		    wp_set_post_terms( $post_id, $skill, 'skill', false );
+    else {
+      // Save the category
+      wp_set_post_terms( $post_id, $skill, 'skill', false );
 
-	        // Redirect the user to the Attendees list with a success message
-            wp_redirect(get_bloginfo('url') . "/attendees?msg=attendees-register-success");
-			
-			// Send the emails
-			// Send the email to admin
-		
-			$to = get_option('admin_email');
-			$url = home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit';
-			$subjet = __( 'New WPHackathon attendee', 'wph_attendees' );
-			$message = __( 'There is a new attendee for the WPHackathon.<p> Please, <a href="'. $url .'" title="attendee">login in the web and check it</a>.</p>', 'wph_attendees' );
-			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+      // Redirect the user to the Attendees list with a success message
+      wp_redirect(get_bloginfo('url') . "/attendees?msg=attendees-register-success");
 
-			wp_mail( $to, $subjet, $message, $headers );
-        }
+      // Send the emails
+      
+      // Send the email to admin
+      $to = get_option('admin_email');
+      $url = home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit';
+      $subjet = __( 'New WPHackathon attendee', 'wph_attendees' );
+      $message = __( 'There is a new attendee for the WPHackathon.<p> Please, <a href="'. $url .'" title="attendee">login in the web and check it</a>.</p>', 'wph_attendees' );
+      $headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+      wp_mail( $to, $subjet, $message, $headers );
+
+      // Send the email to the attendee
+      $to = $email;
+      $subjet = __( 'Thanks for your application to WPHackathon', 'wph_attendees' );
+      $message = __( 'Hey ' . $name . ',<br/>  Thank you for your interest in WPHackathon. Now, the administrator will check your application.<br/>  You will receive an email when your application has been aproved.<br/>  Thanks again for your interest in WPHackathon.<br> <p><strong>The WPHackathon team</strong></p>' );
+      $headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+      wp_mail( $to, $subjet, $message, $headers );
+    }
 
 	} // end IF
 

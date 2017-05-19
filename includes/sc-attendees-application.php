@@ -219,6 +219,15 @@ function wphackathon_attendees_application_register(){
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
 			wp_mail( $to, $subjet, $message, $headers );
+			
+			// Send the email to the attendee
+			
+			$to = $email;
+			$subjet = __( 'Thanks for your application to WPHackathon', 'wph_attendees' );
+			$message = __( 'Hey ' . $name . ',<br/>  Thank you for your interest in WPHackathon. Now, the administrator will check your application.<br/>  You will receive an email when your application has been aproved.<br/>  Thanks again for your interest in WPHackathon.<br> <p><strong>The WPHackathon team</strong></p>' );
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+			
+			wp_mail( $to, $subjet, $message, $headers );
         }
 
 	} // end IF

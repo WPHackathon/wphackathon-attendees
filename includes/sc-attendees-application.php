@@ -223,7 +223,7 @@ function wphackathon_attendees_application_register(){
       // Send the email to the attendee
       $to = $email;
       $subjet = __( 'Thanks for your application to WPHackathon', 'wph_attendees' );
-      $message = __( 'Hey ' . $name . ',<br/>  Thank you for your interest in WPHackathon. Now, the administrator will check your application.<br/>  You will receive an email when your application has been aproved.<br/>  Thanks again for your interest in WPHackathon.<br> <p><strong>The WPHackathon team</strong></p>' );
+      $message = __( 'Hey ' . $name . ',<br/>  Thank you for your interest in WPHackathon. Now, the administrator will check your application.<br/>  You will receive an email when your application has been approved.<br/>  Thanks again for your interest in WPHackathon.<br> <p><strong>The WPHackathon team</strong></p>' );
       $headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
       wp_mail( $to, $subjet, $message, $headers );
@@ -233,3 +233,23 @@ function wphackathon_attendees_application_register(){
 
 }
 add_action('template_redirect', 'wphackathon_attendees_application_register');
+
+
+//send an email to attendee when admin publish the post
+
+function wphackathon_send_mails_on_publish( $new_status, $old_status, $post )
+{
+    if (( $new_status == 'publish' ) && ( $old_status !== 'publish' ) 
+        && ( $post -> post_type == 'attendee' )){
+			$email = get_post_meta($post->ID, "attendee_email", $single = true);
+			$name = get_the_title($post->ID);
+			$message = __('Hey '. $name .'!<br/>  The admin has approved your application. You can see it <a href="' . get_permalink( $post ) . '">here</a><br/>  Thank you for your interest in WPHackathon.<br> <p><strong>The WPHackathon team</strong></p>.', 'wph_attendees');
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+			
+			wp_mail( $email, __('Your application has been approve!', 'wph_attendees'), $message, $headers ); 
+			}
+	else {
+		return;
+			}
+}
+add_action( 'transition_post_status', 'wphackathon_send_mails_on_publish', 10, 3 );

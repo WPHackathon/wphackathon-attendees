@@ -6,6 +6,7 @@ Plugin URI: https://wphackathon.com
 Description: Creates a Custom Post Type to manage the Attendees participating in the WPHackathon
 Author: WPHackathon
 Author URI: https://www.wphackathon.com
+Network: true
 */
 
 define( 'WPH_ATTENDEES_PATH', dirname( __FILE__ ) );

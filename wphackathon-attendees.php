@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WPHackathon - Attendees
-Version: 1.0.2
+Version: 1.0.3
 Plugin URI: https://wphackathon.com
 Description: Creates a Custom Post Type to manage the Attendees participating in the WPHackathon
 Author: WPHackathon

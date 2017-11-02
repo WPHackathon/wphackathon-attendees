@@ -3,7 +3,7 @@ Contributors: ibonazkoitia, mgelves, frantorres, fernandoaureonet, bi0xid
 Tags: hackathon, attendees, organization
 Requires at least: 4.5
 Tested up to: 4.7.5
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,9 @@ No, you don't. You could change / delete / create new ones.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.3 =
+* Fix the $subject variable in one of the files
 
 = 1.0.2 =
 * Updated some of the text domains as where incorrect

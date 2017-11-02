@@ -30,7 +30,7 @@ Note that this plugins will create necessary pages and default skills for the me
 
 == Frequently Asked Questions ==
 
-= ¿Do i have to keep the default skills? =
+= Do I have to keep the default skills? =
 
 No, you don't. You could change / delete / create new ones.
 
@@ -38,12 +38,17 @@ No, you don't. You could change / delete / create new ones.
 
 == Changelog ==
 
+= 1.0.2 =
+* Updated some of the text domains as where incorrect
+* Improve the automatic email messages
+* Correct some texts from the readme.txt
+
 = 1.0.1 =
 * Default taxonomies are created when plugin is activated
 * Necessary pages are created when plugin is activated
 
 
-= 1.0 =
+= 1.0.0 =
 * Initial version
 
 

@@ -41,7 +41,11 @@ class WPH_ATTENDEES_Base
 		$this->loadPluginTextDomain();
 		$this->registerScripts();
 		$this->removePluginUpdates();
+	}
 
+	public function init() {
+		$attendees_shortcode = new WP_Hackaton_Atendees_Application();
+		$attendees_shortcode->init();
 	}
 
 	public function loadPluginTextDomain() {
@@ -97,3 +101,4 @@ function wph_attendees_adminErrorsShow(){
 }
 
 $WPH_ATTENDEES_plugin_base = new WPH_ATTENDEES_Base();
+add_action( 'plugins_loaded', array( $WPH_ATTENDEES_plugin_base, 'init' ) );

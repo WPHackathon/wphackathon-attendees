@@ -24,4 +24,8 @@ textarea.error_empty_field{
     border-color: #d6e9c6;
 }
 
+.wph-field-error.alert p {
+    margin-bottom:0;
+}
+
 .hidden {display: none;}

@@ -27,9 +27,6 @@ include( WPH_ATTENDEES_PATH . '/includes/sc-attendees.php' );
 /* Shortcode - Attendees Application */
 include( WPH_ATTENDEES_PATH . '/includes/sc-attendees-application.php' );
 
-/* Create custom pages for attendees */
-include( WPH_ATTENDEES_PATH . '/includes/create-custom-pages.php' );
-
 /* Plugin installer */
 include( WPH_ATTENDEES_PATH . '/includes/class-installer.php' );
 

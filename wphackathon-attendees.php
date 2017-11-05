@@ -33,9 +33,11 @@ include( WPH_ATTENDEES_PATH . '/includes/create-custom-pages.php' );
 /* Plugin installer */
 include( WPH_ATTENDEES_PATH . '/includes/class-installer.php' );
 
+// Activation hooks
 register_activation_hook( __FILE__, array( 'WP_Hackaton_Installer', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'WP_Hackaton_Installer', 'activate' ) );
 add_action('wpmu_new_blog', array( 'WP_Hackaton_Installer', 'activate_blog' ), 10, 6 );
+add_action( 'admin_init', array( 'WP_Hackaton_Installer', 'maybe_upgrade' ) );
 
 /* Widget - Attendees */
 // include( WPH_ATTENDEES_PATH . '/includes/widget-attendees.php' );

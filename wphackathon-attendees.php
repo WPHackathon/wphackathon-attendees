@@ -9,6 +9,8 @@ Author URI: https://www.wphackathon.com
 Network: true
 */
 
+define( 'WPH_VERSION', '1.0.2' );
+
 define( 'WPH_ATTENDEES_PATH', dirname( __FILE__ ) );
 define( 'WPH_ATTENDEES_FOLDER', basename( WPH_ATTENDEES_PATH ) );
 define( 'WPH_ATTENDEES_URL', plugins_url() . '/' . WPH_ATTENDEES_FOLDER );
@@ -18,7 +20,6 @@ include( WPH_ATTENDEES_PATH . '/includes/cpt-attendees.php' );
 
 /* Custom Taxonomy Attendees Skills */
 include( WPH_ATTENDEES_PATH . '/includes/ct-skills.php' );
-register_activation_hook( __FILE__, 'wphackathon_custom_taxonomy');
 
 /* Shortcode - Attendees */
 include( WPH_ATTENDEES_PATH . '/includes/sc-attendees.php' );
@@ -28,8 +29,13 @@ include( WPH_ATTENDEES_PATH . '/includes/sc-attendees-application.php' );
 
 /* Create custom pages for attendees */
 include( WPH_ATTENDEES_PATH . '/includes/create-custom-pages.php' );
-register_activation_hook( __FILE__, 'wphackathon_create_pages' );
 
+/* Plugin installer */
+include( WPH_ATTENDEES_PATH . '/includes/class-installer.php' );
+
+register_activation_hook( __FILE__, array( 'WP_Hackaton_Installer', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'WP_Hackaton_Installer', 'activate' ) );
+add_action('wpmu_new_blog', array( 'WP_Hackaton_Installer', 'activate_blog' ), 10, 6 );
 
 /* Widget - Attendees */
 // include( WPH_ATTENDEES_PATH . '/includes/widget-attendees.php' );
